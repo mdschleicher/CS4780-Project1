@@ -13,12 +13,12 @@ public class SDES {
 	private static final byte[] P4 = {2,4,3,1};
 	private static final int LEFT = 0;
 	private static final int RIGHT = 1;
-	private static final byte[][][][][] S1 = {
+	protected static final byte[][][][][] S0 = {
 												{
 													{
 														{
 															//0000 0001
-															{0,0}, {1,1}
+															{0,1}, {1,1}
 														},
 														
 														{
@@ -66,7 +66,7 @@ public class SDES {
 													}
 												}
 											};
-	private static final byte[][][][][] S2 = {
+	protected static final byte[][][][][] S1 = {
 												{
 													{
 														{
@@ -227,8 +227,8 @@ public class SDES {
 		
 		byte[][] afterSplit = split(afterKeyXor);
 		
-		byte[] afterXor = xor(executePbox(P4,combine(S1[afterSplit[LEFT][0]][afterSplit[LEFT][1]][afterSplit[LEFT][2]][afterSplit[LEFT][3]],
-				S2[afterSplit[RIGHT][0]][afterSplit[RIGHT][1]][afterSplit[RIGHT][2]][afterSplit[RIGHT][3]])), splitInput[LEFT]);
+		byte[] afterXor = xor(executePbox(P4,combine(S0[afterSplit[LEFT][0]][afterSplit[LEFT][1]][afterSplit[LEFT][2]][afterSplit[LEFT][3]],
+				S1[afterSplit[RIGHT][0]][afterSplit[RIGHT][1]][afterSplit[RIGHT][2]][afterSplit[RIGHT][3]])), splitInput[LEFT]);
 		
 		System.arraycopy(afterXor, 0, results[LEFT], 0, afterXor.length);
 		
@@ -256,7 +256,8 @@ public class SDES {
 		return results;
 	}
 	
-	static class KeyGenerator {
+	//static class because doesn't need to modify outer class
+	public static class KeyGenerator {
 		byte[] myCurrentKeyValue;
 		int subKeyCount;
 		private final int[] shiftLookupTable = {1,2};

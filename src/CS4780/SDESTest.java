@@ -24,6 +24,11 @@ class SDESTest {
 	byte[] plaintext4 = {1,0,1,0,1,0,1,0};
 	byte[] ciphertext4 = {0,0,0,0,0,1,0,0};
 	
+	private static byte[] ZERO = {0,0};
+	private static byte[] ONE = {0,1};
+	private static byte[] TWO = {1,0};
+	private static byte[] THREE = {1,1};
+	
 	@Test
 	void testEncrypt() {
 
@@ -105,6 +110,96 @@ class SDESTest {
 		KeyGenerator test2 = new KeyGenerator(rawkey);
 		assertArrayEquals(test2.next(), subkey1);
 		assertArrayEquals(test2.next(), subkey2);
+		
+	}
+	
+	@Test
+	void testS0() {
+		byte[] Row0Column0 = ONE;
+		byte[] Row0Column1 = ZERO;
+		byte[] Row0Column2 = THREE;
+		byte[] Row0Column3 = TWO;
+		
+		byte[] Row1Column0 = THREE;
+		byte[] Row1Column1 = TWO;
+		byte[] Row1Column2 = ONE;
+		byte[] Row1Column3 = ZERO;
+		
+		byte[] Row2Column0 = ZERO;
+		byte[] Row2Column1 = TWO;
+		byte[] Row2Column2 = ONE;
+		byte[] Row2Column3 = THREE;
+		
+		byte[] Row3Column0 = THREE;
+		byte[] Row3Column1 = ONE;
+		byte[] Row3Column2 = THREE;
+		byte[] Row3Column3 = TWO;
+		
+		
+		assertArrayEquals(SDES.S0[0][0][0][0] , Row0Column0 );
+		assertArrayEquals(SDES.S0[0][0][0][1] , Row1Column0 );
+		assertArrayEquals(SDES.S0[1][0][0][0] , Row2Column0 );
+		assertArrayEquals(SDES.S0[1][0][0][1] , Row3Column0 );
+		
+		assertArrayEquals(SDES.S0[0][0][1][0] , Row0Column1 );
+		assertArrayEquals(SDES.S0[0][0][1][1] , Row1Column1 );
+		assertArrayEquals(SDES.S0[1][0][1][0] , Row2Column1 );
+		assertArrayEquals(SDES.S0[1][0][1][1] , Row3Column1 );
+		
+		assertArrayEquals(SDES.S0[0][1][0][0] , Row0Column2 );
+		assertArrayEquals(SDES.S0[0][1][0][1] , Row1Column2 );
+		assertArrayEquals(SDES.S0[1][1][0][0] , Row2Column2 );
+		assertArrayEquals(SDES.S0[1][1][0][1] , Row3Column2 );
+		
+		assertArrayEquals(SDES.S0[0][1][1][0] , Row0Column3 );
+		assertArrayEquals(SDES.S0[0][1][1][1] , Row1Column3 );
+		assertArrayEquals(SDES.S0[1][1][1][0] , Row2Column3 );
+		assertArrayEquals(SDES.S0[1][1][1][1] , Row3Column3 );
+		
+	}
+	
+	@Test
+	void testS1() {
+		byte[] Row0Column0 = ZERO;
+		byte[] Row0Column1 = ONE;
+		byte[] Row0Column2 = TWO;
+		byte[] Row0Column3 = THREE;
+		
+		byte[] Row1Column0 = TWO;
+		byte[] Row1Column1 = ZERO;
+		byte[] Row1Column2 = ONE;
+		byte[] Row1Column3 = THREE;
+		
+		byte[] Row2Column0 = THREE;
+		byte[] Row2Column1 = ZERO;
+		byte[] Row2Column2 = ONE;
+		byte[] Row2Column3 = ZERO;
+		
+		byte[] Row3Column0 = TWO;
+		byte[] Row3Column1 = ONE;
+		byte[] Row3Column2 = ZERO;
+		byte[] Row3Column3 = THREE;
+		
+		
+		assertArrayEquals(SDES.S1[0][0][0][0] , Row0Column0 );
+		assertArrayEquals(SDES.S1[0][0][0][1] , Row1Column0 );
+		assertArrayEquals(SDES.S1[1][0][0][0] , Row2Column0 );
+		assertArrayEquals(SDES.S1[1][0][0][1] , Row3Column0 );
+		
+		assertArrayEquals(SDES.S1[0][0][1][0] , Row0Column1 );
+		assertArrayEquals(SDES.S1[0][0][1][1] , Row1Column1 );
+		assertArrayEquals(SDES.S1[1][0][1][0] , Row2Column1 );
+		assertArrayEquals(SDES.S1[1][0][1][1] , Row3Column1 );
+		
+		assertArrayEquals(SDES.S1[0][1][0][0] , Row0Column2 );
+		assertArrayEquals(SDES.S1[0][1][0][1] , Row1Column2 );
+		assertArrayEquals(SDES.S1[1][1][0][0] , Row2Column2 );
+		assertArrayEquals(SDES.S1[1][1][0][1] , Row3Column2 );
+		
+		assertArrayEquals(SDES.S1[0][1][1][0] , Row0Column3 );
+		assertArrayEquals(SDES.S1[0][1][1][1] , Row1Column3 );
+		assertArrayEquals(SDES.S1[1][1][1][0] , Row2Column3 );
+		assertArrayEquals(SDES.S1[1][1][1][1] , Row3Column3 );
 		
 	}
 
