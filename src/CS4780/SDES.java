@@ -120,7 +120,111 @@ public class SDES {
 												}
 											};
 
+	
+
+	
+	
+	public static void main(String[] args) {
+		byte[] rawkey1 = {0,0,0,0,0,0,0,0,0,0};
+		byte[] plaintext1 = {0,0,0,0,0,0,0,0};
+		
+		byte[] rawkey2 = {1,1,1,1,1,1,1,1,1,1};
+		byte[] plaintext2 = {1,1,1,1,1,1,1,1};
+		
+		byte[] rawkey3 = {0,0,0,0,0,1,1,1,1,1};
+		
+		byte[] rawkey5 = {1,0,0,0,1,0,1,1,1,0};
+		byte[] cipertext5 = {0,0,0,1,1,1,0,0};
+		byte[] cipertext6 = {1,1,0,0,0,0,1,0};
+		
+		byte[] rawkey7 = {0,0,1,0,0,1,1,1,1,1};
+		byte[] cipertext7 = {1,0,0,1,1,1,0,1};
+		byte[] cipertext8 = {1,0,0,1,0,0,0,0};
+		
+		
+		System.out.println("Unknown Ciphertext:");
+		System.out.print("Raw Key: ");
+		printByteArray(rawkey1);
+		System.out.print(" Plaintext: ");
+		printByteArray(plaintext1);
+		System.out.print(" Ciphertext: ");
+		printByteArray(Encrypt(rawkey1,plaintext1));
+		System.out.println("");
+		
+		System.out.print("Raw Key: ");
+		printByteArray(rawkey2);
+		System.out.print(" Plaintext: ");
+		printByteArray(plaintext2);
+		System.out.print(" Ciphertext: ");
+		printByteArray(Encrypt(rawkey2,plaintext2));
+		System.out.println("");
+		
+		System.out.print("Raw Key: ");
+		printByteArray(rawkey3);
+		System.out.print(" Plaintext: ");
+		printByteArray(plaintext1);
+		System.out.print(" Ciphertext: ");
+		printByteArray(Encrypt(rawkey3,plaintext1));
+		System.out.println("");
+		
+		System.out.print("Raw Key: ");
+		printByteArray(rawkey3);
+		System.out.print(" Plaintext: ");
+		printByteArray(plaintext2);
+		System.out.print(" Ciphertext: ");
+		printByteArray(Encrypt(rawkey3,plaintext2));
+		System.out.println("");
+		
+		System.out.println("Unknown Plaintext:");
+		System.out.print("Raw Key: ");
+		printByteArray(rawkey5);
+		System.out.print(" Plaintext: ");
+		printByteArray(Decrypt(rawkey5,cipertext5));
+		System.out.print(" Ciphertext: ");
+		printByteArray(cipertext5);
+		System.out.println("");
+		
+		System.out.print("Raw Key: ");
+		printByteArray(rawkey5);
+		System.out.print(" Plaintext: ");
+		printByteArray(Decrypt(rawkey5,cipertext6));
+		System.out.print(" Ciphertext: ");
+		printByteArray(cipertext6);
+		System.out.println("");
+		
+		System.out.print("Raw Key: ");
+		printByteArray(rawkey7);
+		System.out.print(" Plaintext: ");
+		printByteArray(Decrypt(rawkey7,cipertext7));
+		System.out.print(" Ciphertext: ");
+		printByteArray(cipertext7);
+		System.out.println("");
+		
+		System.out.print("Raw Key: ");
+		printByteArray(rawkey7);
+		System.out.print(" Plaintext: ");
+		printByteArray(Decrypt(rawkey7,cipertext8));
+		System.out.print(" Ciphertext: ");
+		printByteArray(cipertext8);
+		System.out.println("");
+	}
+	
+	public static void printByteArray(byte[] printMe) {
+		if(printMe[0] == (byte)0) 
+			System.out.print("{0");
+		else
+			System.out.print("{1");
+		
+		for(int i = 1; i < printMe.length; i++) {
+			if(printMe[i] == (byte)0)
+				System.out.print(",0");
+			else
+				System.out.print(",1");
 			
+		}
+		
+		System.out.print("}");
+	}
 			
 	
 	public static byte[] Encrypt(byte[] rawkey, byte[] plaintext) {
