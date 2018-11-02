@@ -256,6 +256,17 @@ public class SDES {
 		return results;
 	}
 	
+	//string to byte array.
+	public static byte[] stringToByteArray(String s){
+		byte[] array = new byte[s.length()];
+
+		for (int i = 0; i < s.length(); i++){
+		    char c = s.charAt(i);        
+		    array[i] = (byte) Character.getNumericValue(c);
+		}
+		return array;
+	}
+	
 	//static class because doesn't need to modify outer class
 	public static class KeyGenerator {
 		byte[] myCurrentKeyValue;
