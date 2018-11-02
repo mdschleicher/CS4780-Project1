@@ -256,6 +256,7 @@ public class SDES {
 		return results;
 	}
 	
+	//Randy
 	//string to byte array.
 	public static byte[] stringToByteArray(String s){
 		byte[] array = new byte[s.length()];
@@ -265,6 +266,56 @@ public class SDES {
 		    array[i] = (byte) Character.getNumericValue(c);
 		}
 		return array;
+	}
+	
+	
+	//Randy
+	//get decimal
+	public static int getDecimal(byte[] arr){
+		int total = 0;
+		int count = arr.length - 1;
+
+		for(byte b: arr){
+			if(b == 1)
+				total += Math.pow(2, count);	
+			count--;
+		}
+
+		return total;
+	}
+
+	//Randy
+	//get byte
+	public static byte[] getByte(int decimal, int binary_size){
+		byte[] binary = new byte[binary_size];
+
+		while(binary_size > 0){
+			binary[binary_size-1] = (byte) (decimal % 2);
+			decimal = decimal >> 1;
+			binary_size--;
+		}
+
+		return binary;
+	}
+	
+	//Randy
+	//Concatenate two byte arrays
+	public static byte[] concatenateByteArrays(byte[] arr1, byte[] arr2){
+		byte[] concated = new byte[arr1.length + arr2.length];
+
+		int count = 0;
+		for(byte b : arr1){
+			concated[count]=b;
+			count++;
+		}
+
+		for(byte b : arr2){
+			concated[count]=b;
+			count++;
+		}
+
+
+		return concated;
 	}
 	
 	//static class because doesn't need to modify outer class
