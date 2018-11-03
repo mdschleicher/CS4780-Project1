@@ -18,14 +18,14 @@ public class Cracking {
 	public static void main(String args[]) {
 		question1();
 		
-		question2();
+		//question2();
 		
-		//question3();
+		question3();
 		
 	}
 	
 	private static void question3() {
-		String file = "msg1.txt";
+		String file = "msg2.txt";
 		String currentLine = null;
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -133,7 +133,7 @@ public class Cracking {
 			
 			//decrypt
 			for(int i = 0; i < cipherBits.length; i++) {
-				System.arraycopy(SDES.Decrypt(byteKey, cipherBits[i]), 0, plaintextBytes, TEXT_BIT_LENGTH * i, TEXT_BIT_LENGTH);;
+				System.arraycopy(SDES.Decrypt(byteKey, cipherBits[i]), 0, plaintextBytes, TEXT_BIT_LENGTH * i, TEXT_BIT_LENGTH);
 			}
 			
 			//convert
