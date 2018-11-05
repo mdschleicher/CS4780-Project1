@@ -1,12 +1,5 @@
 package CS4780;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class Cracking {
 
 	private static final String testCase1 = "CRYPTOGRAPHY";
@@ -20,49 +13,33 @@ public class Cracking {
 		
 		question2();
 		
-		//question3();
+		question3();
 		
 	}
 	
 	private static void question3() {
-		String file = "msg1.txt";
-		String currentLine = null;
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			currentLine = reader.readLine();
-		    reader.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String msg2txt = "00011111100111111110011111101100111000000011001011110010101010110001011101001101000000110011010111111110000000001010111111000001010010111001111001010101100000110111100011111101011100100100010101000011001100101000000101111011000010011010111100010001001000100001111100100000001000000001101101000000001010111010000001000010011100101111001101111011001001010001100010100000";
 		
-		byte[][] cipherBits = new byte[currentLine.length() / TEXT_BIT_LENGTH][TEXT_BIT_LENGTH];
+		byte[][] cipherBits = new byte[msg2txt.length() / TEXT_BIT_LENGTH][TEXT_BIT_LENGTH];
 		
-		for(int i = 0; i < currentLine.length(); i++) {
-			if(currentLine.charAt(i) == '1') 
+		for(int i = 0; i < msg2txt.length(); i++) {
+			if(msg2txt.charAt(i) == '1') 
 				cipherBits[i/TEXT_BIT_LENGTH][i%TEXT_BIT_LENGTH] = 1;
-			else if(currentLine.charAt(i) == '0') 
+			else if(msg2txt.charAt(i) == '0') 
 				cipherBits[i/TEXT_BIT_LENGTH][i%TEXT_BIT_LENGTH] = 0;
 			else
-				throw new RuntimeException("Invalid character in file: " + currentLine.charAt(i));
-		}
-		
-		BufferedWriter writer = null;
-		try {
-			writer = new BufferedWriter(new FileWriter("plaintext2.txt"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				throw new RuntimeException("Invalid character in file: " + msg2txt.charAt(i));
 		}
 
+		System.out.println("");
+		System.out.println("Cracking msg2.txt: (key1) (key2) (CASCII Encoding of decrypted bits)");
+
+		
 		for(int testKey1 = 0; testKey1 < MAX_KEY; testKey1++) {
 			byte[] byteKey1 = intToKeyArray(testKey1);
 			for(int testKey2 = 0; testKey2 < MAX_KEY; testKey2++) {
 				byte[] byteKey2 = intToKeyArray(testKey2);
-				byte[] plaintextBytes = new byte[currentLine.length()];
+				byte[] plaintextBytes = new byte[msg2txt.length()];
 				
 				//decrypt
 				for(int i = 0; i < cipherBits.length; i++) {
@@ -72,64 +49,37 @@ public class Cracking {
 				//convert
 				String plainText = CASCII.toString(plaintextBytes);
 				
-				
-				
-				
-				    try {
-						writer.write(testKey1 + " " + testKey2 + " " + plainText);
-						writer.newLine();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 				     
-			    
-				/*SDES.printByteArray(byteKey1);
-				System.out.print(" ");
-				SDES.printByteArray(byteKey2);
-				System.out.println(" " + plainText);*/
+				if(isMaybeSentence(plainText, 1.1)) {
+					SDES.printByteArray(byteKey1);
+					System.out.print(" ");
+					SDES.printByteArray(byteKey2);
+					System.out.println(" " + plainText);
+				}
 			}
-			System.out.println("Done with first key: " + testKey1);
 		}
-	    try {
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	private static void question2() {
-		String file = "msg1.txt";
-		String currentLine = null;
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			currentLine = reader.readLine();
-		    reader.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String msg1txt = "1011011001111001001011101111110000111110100000000001110111010001111011111101101100010011000000101101011010101000101111100011101011010111100011101001010111101100101110000010010101110001110111011111010101010100001100011000011010101111011111010011110111001001011100101101001000011011111011000010010001011101100011011110000000110010111111010000011100011111111000010111010100001100001010011001010101010000110101101111111010010110001001000001111000000011110000011110110010010101010100001000011010000100011010101100000010111000000010101110100001000111010010010101110111010010111100011111010101111011101111000101001010001101100101100111001110111001100101100011111001100000110100001001100010000100011100000000001001010011101011100101000111011100010001111101011111100000010111110101010000000100110110111111000000111110111010100110000010110000111010001111000101011111101011101101010010100010111100011100000001010101110111111101101100101010011100111011110101011011";
+
 		
-		byte[][] cipherBits = new byte[currentLine.length() / TEXT_BIT_LENGTH][TEXT_BIT_LENGTH];
+		byte[][] cipherBits = new byte[msg1txt.length() / TEXT_BIT_LENGTH][TEXT_BIT_LENGTH];
 		
-		for(int i = 0; i < currentLine.length(); i++) {
-			if(currentLine.charAt(i) == '1') 
+		for(int i = 0; i < msg1txt.length(); i++) {
+			if(msg1txt.charAt(i) == '1') 
 				cipherBits[i/TEXT_BIT_LENGTH][i%TEXT_BIT_LENGTH] = 1;
-			else if(currentLine.charAt(i) == '0') 
+			else if(msg1txt.charAt(i) == '0') 
 				cipherBits[i/TEXT_BIT_LENGTH][i%TEXT_BIT_LENGTH] = 0;
 			else
-				throw new RuntimeException("Invalid character in file: " + currentLine.charAt(i));
+				throw new RuntimeException("Invalid character in file: " + msg1txt.charAt(i));
 		}
 		
+		System.out.println("");
 		System.out.println("Cracking msg1.txt: (key) (CASCII Encoding of decrypted bits)");
 		for(int testKey = 0; testKey < MAX_KEY; testKey++) {
 			byte[] byteKey = intToKeyArray(testKey);
-			byte[] plaintextBytes = new byte[currentLine.length()];
+			byte[] plaintextBytes = new byte[msg1txt.length()];
 			
 			//decrypt
 			for(int i = 0; i < cipherBits.length; i++) {
@@ -138,9 +88,10 @@ public class Cracking {
 			
 			//convert
 			String plainText = CASCII.toString(plaintextBytes);
-			
-			SDES.printByteArray(byteKey);
-			System.out.println(" " + plainText);
+			if(isMaybeSentence(plainText, 1.5)) {
+				SDES.printByteArray(byteKey);
+				System.out.println(" " + plainText);
+			}
 		}
 
 	}
@@ -193,5 +144,15 @@ public class Cracking {
 		System.out.println("CipherText Arrays: ");
 		printArrayByteArrays(results);
 		System.out.println("");
+	}
+	
+	private static boolean isMaybeSentence(String text, double tolerance) {
+		
+		double averageLettersPerWord = 4.79;
+		
+		String[] words = text.split("\\s+");
+		
+		return ((((double) text.length() - words.length) / words.length) <= averageLettersPerWord * tolerance);
+
 	}
 }
