@@ -13,6 +13,9 @@ public class SDES {
 	private static final byte[] P4 = {2,4,3,1};
 	private static final int LEFT = 0;
 	private static final int RIGHT = 1;
+	
+	//S0[byte 0][byte 1][byte 2][byte 3] returns an array corresponding to the S0 table with "0123" as input
+	//this allows instant lookup of the result of the S-box
 	protected static final byte[][][][][] S0 = {
 												{
 													{
@@ -66,6 +69,9 @@ public class SDES {
 													}
 												}
 											};
+	
+	//S1[byte 0][byte 1][byte 2][byte 3] returns an array corresponding to the S1 table with "0123" as input
+	//this allows instant lookup of the result of the S-box
 	protected static final byte[][][][][] S1 = {
 												{
 													{
@@ -120,9 +126,6 @@ public class SDES {
 												}
 											};
 
-	
-
-	
 	
 	public static void main(String[] args) {
 		byte[] rawkey1 = {0,0,0,0,0,0,0,0,0,0};
@@ -267,14 +270,18 @@ public class SDES {
 		return executePbox(FP, workingText);
 	}
 	
+	//Generic pbox executor, send in the pBox and the input and it will generate the output based on the pBox
 	public static byte[] executePbox(byte[] pBox, byte[] input) throws IllegalArgumentException {
+		//output is based on length of the pBox (to shrink or expand the input)
 		byte[] output = new byte[pBox.length];
-		
+		//pBox written are assuming the first index is 1 not 0
+		int modifiedLength = input.length + HUMAN_READABLE_OFFSET;
+
 		for(int i = 0; i < pBox.length; i++) {
-			int modifiedLength = input.length + HUMAN_READABLE_OFFSET;
 			if(pBox[i] < modifiedLength) {
 				output[i] = input[pBox[i] - HUMAN_READABLE_OFFSET];
 			} else {
+				//pBox is asking for an index not in the input
 				throw new IllegalArgumentException("Invalid p-Box.");
 			}
 		}
@@ -283,6 +290,8 @@ public class SDES {
 		
 	}
 	
+	//Left "shift" (rotate) the byte array
+	//Does this "inplace" aka to the input directly by following the pointer
 	public static void leftShift(byte[] input) {
 		byte LeftLeftBit = input[0];
 		byte RightLeftBit = input[input.length / 2];
@@ -299,6 +308,8 @@ public class SDES {
 
 	}
 	
+	//Swaps the first half of the byte array with the second half
+	//Does this "inplace" aka to the input directly by following the pointer
 	public static void swap(byte[] input) {
 		byte[] temp = new byte[input.length/2];
 		System.arraycopy(input, 0, temp, 0, temp.length);
@@ -306,6 +317,7 @@ public class SDES {
 		System.arraycopy(temp, 0, input, temp.length, temp.length);
 	}
 	
+	//returns a new byte array of left xor right
 	public static byte[] xor(byte[] left, byte[] right) {
 		if(left.length != right.length) 
 			throw new IllegalArgumentException("Left and Right do not have the same length!");
@@ -320,6 +332,7 @@ public class SDES {
 		
 	}
 	
+	//returns a new byte array of the result of fk on input with the given roundkey
 	public static byte[] fk(byte[] input, byte[] roundKey) {
 		byte[][] results = new byte[2][input.length/2];
 		
@@ -339,6 +352,8 @@ public class SDES {
 		return combine(results);
 	}
 	
+	//split the input array into two sub arrays (right down the middle)
+	//results[0] = left array; results[1] = right array
 	public static byte[][] split(byte[] input) {
 		byte[][] results = new byte[2][input.length/2];
 		System.arraycopy(input, 0, results[LEFT], 0, results[LEFT].length);
@@ -346,6 +361,9 @@ public class SDES {
 		return results;
 	}
 	
+	//combine two subarrays created with split back together
+	//input[0] = left, input[1] = right
+	//assumes left and right are the same length
 	public static byte[] combine(byte[][] input) {
 		byte[] results = new byte[2*input[LEFT].length];
 		System.arraycopy(input[LEFT], 0, results, 0, input[LEFT].length);
@@ -353,6 +371,7 @@ public class SDES {
 		return results;
 	}
 	
+	//similar to above but without the restriction that left and right are in an array next to each other
 	public static byte[] combine(byte[] left, byte[] right) {
 		byte[] results = new byte[left.length + right.length];
 		System.arraycopy(left, 0, results, 0, left.length);

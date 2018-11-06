@@ -2,10 +2,12 @@ package CS4780;
 
 public class TripleDES {
 	
-	
+	//E3DES(p) = EDES(k1,DDES(k2,EDES(k1, p)))
 	public static byte[] Encrypt( byte[] rawkey1, byte[] rawkey2, byte[] plaintext ) {
 		return SDES.Encrypt(rawkey1, SDES.Decrypt(rawkey2, SDES.Encrypt(rawkey1, plaintext)));
 	}
+	
+	//D3DES(c) = DDES(k1,EDES(k2,DDES(k1, c)))
 	public static byte[] Decrypt( byte[] rawkey1, byte[] rawkey2, byte[] ciphertext ) {
 		return SDES.Decrypt(rawkey1, SDES.Encrypt(rawkey2, SDES.Decrypt(rawkey1, ciphertext)));
 	}
